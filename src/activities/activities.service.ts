@@ -82,7 +82,7 @@ export class ActivitiesService{
 
     }
     await this.activityRepository.delete(id)
-    return activity.id
+    return activity
 
   }
 
