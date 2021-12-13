@@ -55,35 +55,6 @@ export class ActivitiesService{
     return arr
   }
 
-  // async availableLocationByDate(dto: dayInput){
-  //   const date = dto.day
-  //   const newDate = new Date(date).toLocaleDateString()
-  //   const allActivity = await this.findAll()
-  //   const locationData = await this.locationService.findAll()
-  //   const dataLocation = []
-  //   const blackList = []
-  //   for ( let i of locationData) {
-  //     dataLocation.push(i.id)
-  //   }
-  //
-  //
-  //   for (let i of allActivity){
-  //     if ( newDate === (i.day).toLocaleDateString()){
-  //       for (let x of dataLocation){
-  //         if (i.location.id === x){
-  //           blackList.push(i.location.id)
-  //         }
-  //       }
-  //     }
-  //   }
-  //   let difference = dataLocation.
-  //   filter(x => !blackList.
-  //   includes(x)).
-  //   concat(blackList.
-  //   filter(x => !dataLocation.includes(x)));
-  //   return this.locationService.find(difference);
-  // }
-
   async availableLocationByDate(dto: dayInput){
     const newDate = new Date(dto.day)
     const dataActivities = await this.activityRepository.find({where:{day: newDate}})
@@ -125,7 +96,8 @@ export class ActivitiesService{
       throw new HttpException('You are not author', HttpStatus.FORBIDDEN)
     }
     Object.assign(activity, dto)
-    return this.activityRepository.save(activity)
+    await this.activityRepository.save(activity)
+    return await this.activityRepository.findOne({id: activity.id})
   }
 
 
@@ -170,6 +142,10 @@ export class ActivitiesService{
 
     return usersActivities
 
+  }
+
+  async findActivity(id){
+    return this.activityRepository.findOne({id: id})
   }
 
   async findAll(){
