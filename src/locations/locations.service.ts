@@ -6,10 +6,6 @@ import {Location} from "./entities/location.entity";
 import {Repository, In} from "typeorm";
 import {JwtService} from "@nestjs/jwt";
 
-
-
-
-
 @Injectable()
 export class LocationsService {
   constructor(

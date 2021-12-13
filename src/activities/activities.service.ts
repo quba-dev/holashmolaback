@@ -131,25 +131,21 @@ export class ActivitiesService{
   }
 
   async findAllActivityByUser(token){
-    const allActivities = await this.findAll()
     const currentUser = await this.jwtService.verify(token)
     const usersActivities = []
 
-    for (let activity of allActivities){
-      if(currentUser.id === activity.account.id){
-        usersActivities.push(activity)
-      }
+    const activitiesList = await getRepository(Activity)
+        .createQueryBuilder('activities')
+        .where("activities.account.id = :id", {id: currentUser.id})
+        .getMany()
+
+    for (let activity of activitiesList){
+      usersActivities.push(activity.id)
     }
-
-    return usersActivities
-
+    return this.find(usersActivities)
   }
 
   async findActivity(id){
     return this.activityRepository.findOne({id: id})
-  }
-
-  async findAll(){
-    return this.activityRepository.find()
   }
 }
