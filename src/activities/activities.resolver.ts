@@ -65,4 +65,3 @@ export class ActivitiesResolver {
     return this.activitiesService.findActivity(id)
   }
 }
-}
