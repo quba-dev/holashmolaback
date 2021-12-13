@@ -66,6 +66,7 @@ export class ActivitiesService{
         .createQueryBuilder('location')
         .where("location.id NOT IN (:...id)", { id: excludesData})
         .getMany()
+
     return data
   }
 
@@ -81,7 +82,7 @@ export class ActivitiesService{
 
     }
     await this.activityRepository.delete(id)
-    return new HttpException('Activity was removed', HttpStatus.OK)
+    return activity.id
 
   }
 
