@@ -35,7 +35,8 @@ export class LocationsService {
       throw new HttpException('You are not author', HttpStatus.FORBIDDEN)
     }
     Object.assign(location, dto)
-    return this.locationService.save(location)
+    await this.locationService.save(location)
+    return location
   }
 
 

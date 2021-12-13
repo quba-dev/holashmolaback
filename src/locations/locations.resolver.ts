@@ -7,7 +7,7 @@ import {JwtAuthGuard} from "../accounts/jwt-auth.guard";
 import {User} from "../decorators/user.decorator";
 import {Account} from "../accounts/entities/account.entity";
 import {UpdateLocationInput} from "./dto/update-location.input";
-import {Activity} from "../activities/entities/activity.entity";
+
 
 @Resolver(() => Location)
 export class LocationsResolver {

@@ -17,7 +17,7 @@ export class AccountsService {
   async createUser(dto: CreateUserInput){
     const user = new Account()
     Object.assign(user, dto)
-    return await this.userRepository.save(user)
+    return this.userRepository.save(user)
   }
 
   async login(userDto: LoginUserInput) {
@@ -37,7 +37,7 @@ export class AccountsService {
       throw new HttpException('Пользователь с таким email или username существует', HttpStatus.BAD_REQUEST);
     }
     const hashPassword = await bcrypt.hash(userDto.password, 5);
-    return await this.createUser({...userDto, password: hashPassword})
+    return this.createUser({...userDto, password: hashPassword})
 
 
   }
@@ -59,10 +59,10 @@ export class AccountsService {
   }
 
   async getUserByEmail(email:string){
-    return await this.userRepository.findOne({where: {email}})
+    return this.userRepository.findOne({where: {email}})
   }
 
   async getUserByUsername(username: string){
-    return await this.userRepository.findOne({where: {username}})
+    return this.userRepository.findOne({where: {username}})
   }
 }

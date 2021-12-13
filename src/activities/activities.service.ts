@@ -98,7 +98,7 @@ export class ActivitiesService{
     }
     Object.assign(activity, dto)
     await this.activityRepository.save(activity)
-    return await this.activityRepository.findOne({id: activity.id})
+    return this.activityRepository.findOne({id: activity.id})
   }
 
 
