@@ -65,4 +65,10 @@ export class AccountsService {
   async getUserByUsername(username: string){
     return this.userRepository.findOne({where: {username}})
   }
+
+  async getInfo(user){
+    const infoUser = await this.jwtService.verify(user)
+    return this.userRepository.findOne({id:infoUser.id})
+  }
+
 }

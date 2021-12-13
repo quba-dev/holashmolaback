@@ -8,6 +8,7 @@ import {AccountsService} from "./accounts.service";
 import {LoginResponse} from "./dto/login-response.dto";
 import {LoginUserInput} from "./dto/login-user.input";
 import {JwtAuthGuard} from "./jwt-auth.guard";
+import {User} from "../decorators/user.decorator";
 
 @Resolver(() => Account)
 export class AccountsResolver {
@@ -21,6 +22,11 @@ export class AccountsResolver {
   @Mutation(()=> Account)
   signup(@Args('createUserInput') createUserInput: CreateUserInput, @Context() context){
     return this.accountsService.registration(createUserInput);
+  }
+
+  @Query(()=>Account)
+  getInfo(@User() currentUser: Account){
+    return this.accountsService.getInfo(currentUser)
   }
 
 }
