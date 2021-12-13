@@ -1,0 +1,101 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Account {
+  activities: [Activity!]
+  email: String!
+  id: Float!
+  locations: [Location!]
+  password: String!
+  username: String!
+}
+
+type Activity {
+  account: Account!
+  day: DateTime!
+  description: String!
+  id: Int!
+  location: Location!
+  name: String!
+}
+
+input CreateActivityInput {
+  day: String!
+  description: String!
+  location: Float!
+  name: String!
+}
+
+input CreateLocationInput {
+  address: String!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+  username: String!
+}
+
+input DateIntervalInput {
+  endDay: String!
+  startDay: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Location {
+  account: Account!
+  activities: [Activity!]!
+  address: String!
+  id: Float!
+}
+
+type LoginResponse {
+  access_token: String!
+  userId: Float!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  createActivity(createActivityInput: CreateActivityInput!): Activity!
+  createLocation(createLocationInput: CreateLocationInput!): Location!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
+  removeActivity(id: Int!): Activity!
+  removeLocation(id: Int!): Location!
+  signup(createUserInput: CreateUserInput!): Account!
+  updateActivity(updateActivityInput: UpdateActivityInput!): Activity!
+  updateLocation(updateLocationInput: UpdateLocationInput!): Location!
+}
+
+type Query {
+  availableLocationByDate(availableLocationByDay: dayInput!): [Location!]!
+  dates(dateIntervalInput: DateIntervalInput!): [Activity!]!
+  findActByUser: [Activity!]!
+  findAllActivityFromLocationId(id: Int!): [Activity!]!
+  locations: [Location!]!
+}
+
+input UpdateActivityInput {
+  day: String!
+  description: String!
+  id: Int!
+  location: Float!
+  name: String!
+}
+
+input UpdateLocationInput {
+  address: String!
+  id: Int!
+}
+
+input dayInput {
+  day: String!
+}
