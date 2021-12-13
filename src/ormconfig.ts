@@ -5,7 +5,7 @@ import {Activity} from "./activities/entities/activity.entity";
 
 const config: ConnectionOptions={
     type: 'postgres',
-    host: 'localhost',
+    host: 'postgres',
     port: 5432,
     username: 'blocknote',
     password: 'blocknote',

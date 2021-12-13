@@ -7,7 +7,6 @@ import {UseGuards} from "@nestjs/common";
 import {AccountsService} from "./accounts.service";
 import {LoginResponse} from "./dto/login-response.dto";
 import {LoginUserInput} from "./dto/login-user.input";
-import {JwtAuthGuard} from "./jwt-auth.guard";
 import {User} from "../decorators/user.decorator";
 
 @Resolver(() => Account)

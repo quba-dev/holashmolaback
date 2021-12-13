@@ -81,6 +81,7 @@ type Query {
   findActByUser: [Activity!]!
   findActOne(id: Int!): Activity!
   findAllActivityFromLocationId(id: Int!): [Activity!]!
+  getInfo: Account!
   locations: [Location!]!
 }
 
