@@ -65,7 +65,7 @@ export class AccountsService {
     return this.userRepository.findOne({where: {username}})
   }
 
-  async profile(user){ // profile
+  async profile(user){
     const infoUser = await this.jwtService.verify(user)
     return this.userRepository.findOne({id: infoUser.id})
   }

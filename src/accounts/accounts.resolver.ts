@@ -22,10 +22,4 @@ export class AccountsResolver {
   signup(@Args('createUserInput') createUserInput: CreateUserInput, @Context() context){
     return this.accountsService.registration(createUserInput);
   }
-
-  @Query(()=>Account)
-  getInfo(@User() currentUser: Account){
-    return this.accountsService.profile(currentUser)
-  }
-
 }
