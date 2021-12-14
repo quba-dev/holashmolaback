@@ -12,5 +12,6 @@ const config: ConnectionOptions={
     database: 'blocknote',
     entities: [Account, Location, Activity],
     synchronize: true,
-}
+}// Env variables npm i @nestjs/config
+// Then inject into app.module.ts. From imports: [ConfigModule.forRoot({pathFile: '.env'})]
 export default config

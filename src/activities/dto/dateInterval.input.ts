@@ -10,5 +10,4 @@ export class DateIntervalInput {
     @IsNotEmpty()
     @Field()
     endDay: string
-
 }

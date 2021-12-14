@@ -49,19 +49,19 @@ export class ActivitiesResolver {
 
   @Query(()=> [Activity], { name: 'findAllActivityFromLocationId'})
   @UseGuards(JwtAuthGuard)
-  findActLoc(@Args('id', {type: ()=> Int}) id: number){
+  findActLoc(@Args('id', {type: () => Int}) id: number){
     return this.activitiesService.findByLocation(id)
   }
 
-  @Query(()=> [Activity], { name: 'findActByUser'})
+  @Query(() => [Activity], { name: 'findActByUser'})
   @UseGuards(JwtAuthGuard)
   findActByUser(@User() currentUser: Account){
     return this.activitiesService.findAllActivityByUser(currentUser)
   }
 
-  @Query(()=> Activity, { name: 'findActOne'})
+  @Query(() => Activity, { name: 'findActOne'})
   @UseGuards(JwtAuthGuard)
-  findActivity(@Args('id',{type: ()=> Int}) id: number) {
+  findActivity(@Args('id',{type: () => Int}) id: number) {
     return this.activitiesService.findActivity(id)
   }
 }

@@ -32,14 +32,12 @@ export class AccountsService {
 
   async registration(userDto: CreateUserInput) {
     const email = await this.getUserByEmail(userDto.email);
-    const username = await this.getUserByUsername(userDto.username)
+    const username = await this.getUserByUsername(userDto.username);
     if (email || username) {
       throw new HttpException('Пользователь с таким email или username существует', HttpStatus.BAD_REQUEST);
     }
     const hashPassword = await bcrypt.hash(userDto.password, 5);
-    return this.createUser({...userDto, password: hashPassword})
-
-
+    return this.createUser({...userDto, password: hashPassword});
   }
 
   private async generateToken(user: Account) {
@@ -53,12 +51,12 @@ export class AccountsService {
     const user = await this.getUserByEmail(userDto.email);
     const passwordEquals = await bcrypt.compare(userDto.password, user.password);
     if (!user || !passwordEquals) {
-      throw new UnauthorizedException({message: 'Некорректный емайл или пароль'})
+      throw new UnauthorizedException({message: 'Некорректный емайл или пароль'});
     }
     return user;
   }
 
-  async getUserByEmail(email:string){
+  async getUserByEmail(email: string){
     return this.userRepository.findOne({where: {email}})
   }
 
@@ -66,9 +64,8 @@ export class AccountsService {
     return this.userRepository.findOne({where: {username}})
   }
 
-  async getInfo(user){
+  async getInfo(user){ // profile
     const infoUser = await this.jwtService.verify(user)
-    return this.userRepository.findOne({id:infoUser.id})
+    return this.userRepository.findOne({id: infoUser.id})
   }
-
 }

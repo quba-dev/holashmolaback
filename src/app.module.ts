@@ -11,14 +11,12 @@ import { ActivitiesModule } from './activities/activities.module';
 @Module({
   imports: [
       GraphQLModule.forRoot({
-    autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-          sortSchema: true
-  }),
+        autoSchemaFile: join(process.cwd(), 'src/schema.gql'), sortSchema: true
+      }),
       AccountsModule,
       ActivitiesModule,
       LocationsModule,
       TypeOrmModule.forRoot(ormconfig),
-
   ],
 })
 export class AppModule {}

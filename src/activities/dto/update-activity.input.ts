@@ -7,15 +7,19 @@ export class UpdateActivityInput extends PartialType(CreateActivityInput) {
   @IsNotEmpty()
   @Field(() => Int)
   id: number;
+
   @IsNotEmpty()
   @Field()
   name:string
+
   @IsNotEmpty()
   @Field()
   description:string
+
   @IsNotEmpty()
   @Field()
   location: number
+
   @IsNotEmpty()
   @Field()
   day: string

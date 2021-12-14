@@ -30,13 +30,13 @@ export class Account extends BaseEntity{
   @Field()
   password: string
 
-  @OneToMany(()=>Activity,(activity)=>activity.account)
+  @OneToMany(() => Activity,(activity) => activity.account)
   @JoinColumn()
   @Field(type => [Activity], {nullable: true})
   activities:Activity[]
 
   @OneToMany(type => Location, location => location.account)
   @JoinTable()
-  @Field(type =>[Location], {nullable: true})
+  @Field(type => [Location], {nullable: true})
   locations: Location[];
 }

@@ -19,20 +19,17 @@ export class LocationsResolver {
     return this.locationsService.createLocation(createLocationInput, currentUser);
   }
 
-
   @Mutation(() => Location)
   @UseGuards(JwtAuthGuard)
   removeLocation(@Args('id', { type: () => Int }) id: number, @User() currentUser: Account) {
     return this.locationsService.remove(id, currentUser);
   }
 
-
   @Mutation(() => Location)
   @UseGuards(JwtAuthGuard)
   updateLocation(@Args('updateLocationInput') updateLocationInput: UpdateLocationInput, @User() currentUser: Account) {
     return this.locationsService.update(updateLocationInput, currentUser);
   }
-
 
   @Query(() => [Location], { name: 'locations'})
   @UseGuards(JwtAuthGuard)

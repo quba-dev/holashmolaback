@@ -28,7 +28,7 @@ export class ActivitiesService{
     const location = await this.locationService.findById(dto.location)
     await this.locationService.findByLocationAndTime(dto.location, day)
     const currentUser = await this.jwtService.verify(token)
-    Object.assign(activity, dto)
+    Object.assign(activity, dto ) // {account: currentUser, location}
     activity.account = currentUser
     activity.location = location
     return this.activityRepository.save({...activity, day: day})
@@ -39,7 +39,7 @@ export class ActivitiesService{
   }
 
   async findActivityAvailable(dto: DateIntervalInput){
-    const listOfDates = await this.enumerateDaysBetweenDates(dto.startDay,dto.endDay)
+    const listOfDates = await this.enumerateDaysBetweenDates(dto.startDay, dto.endDay)
     const data = await this.activityRepository.find({where:{day: In(listOfDates)}})
     return [...data]
   }
@@ -58,7 +58,7 @@ export class ActivitiesService{
   async availableLocationByDate(dto: dayInput){
     const newDate = new Date(dto.day)
     const dataActivities = await this.activityRepository.find({where:{day: newDate}})
-    if (dataActivities.length === 0){
+    if (dataActivities.length === 0){ // ( !dataActivities.length)
       return this.locationService.findAll()
     }
     const excludesData = dataActivities.map((activity) => activity.location.id);
@@ -71,29 +71,27 @@ export class ActivitiesService{
   }
 
   async remove(id, currentUser){
-    const activity = await this.activityRepository.findOne(id)
+    const activity = await this.activityRepository.findOne({id})
     const user = this.jwtService.verify(currentUser)
 
     if (!activity) {
       throw new HttpException('Activity does not exist', HttpStatus.NOT_FOUND)
     }
-    if(activity.account.email!==user.email){
+    if (activity.account.email !== user.email){
       throw new HttpException('You are not author', HttpStatus.FORBIDDEN)
-
     }
     await this.activityRepository.delete(id)
-    return activity
-
+    return activity;
   }
 
   async update(dto, currentUser){
-    const activity = await this.activityRepository.findOne(dto.id)
+    const activity = await this.activityRepository.findOne({id: dto.id})
     const user = this.jwtService.verify(currentUser)
     if (!activity) {
       throw new HttpException('activity does not exist', HttpStatus.NOT_FOUND)
     }
 
-    if(activity.account.email!==user.email){
+    if (activity.account.email !== user.email){
       throw new HttpException('You are not author', HttpStatus.FORBIDDEN)
     }
     Object.assign(activity, dto)
@@ -103,8 +101,8 @@ export class ActivitiesService{
 
 
   async findByLocation(id: number) {
-    const locationById = await this.locationService.findById(id)
-    if (!locationById) {
+    const locationById = await this.locationService.findById(id);
+    if ( !locationById) {
       throw new HttpException('there is no such location', HttpStatus.NOT_FOUND)
     }
 
@@ -113,39 +111,36 @@ export class ActivitiesService{
         .where("activities.location.id = :id", {id: locationById.id})
         .getMany()
 
-    if (activitiesList.length === 0) {
+    if (activitiesList.length === 0) { // ( !activitiesList.length)
       throw new HttpException('У этой локации нет мероприятий', HttpStatus.NOT_FOUND)
     }
-    const dataActivities = []
-    for ( let activitiesId of activitiesList){
-      dataActivities.push(activitiesId.id)
-    }
 
-    const activities = await this.find(dataActivities)
+    const entry = activitiesList.map((activity) => activity.id)
+    // const dataActivities = []
+    // for ( let activitiesId of activitiesList){
+    //   dataActivities.push(activitiesId.id)
+    // }
+
+    const activities = await this.find(entry)
 
     return [...activities]
   }
 
-  async find(id){
-    return this.activityRepository.find({where:{id: In(id)}})
+  async find(ids){ // (ids: number[])
+    return this.activityRepository.find({where:{id: In(ids)}})
   }
 
   async findAllActivityByUser(token){
     const currentUser = await this.jwtService.verify(token)
-    const usersActivities = []
-
     const activitiesList = await getRepository(Activity)
         .createQueryBuilder('activities')
         .where("activities.account.id = :id", {id: currentUser.id})
         .getMany()
-
-    for (let activity of activitiesList){
-      usersActivities.push(activity.id)
-    }
+    const usersActivities = activitiesList.map((activity) => activity.id)
     return this.find(usersActivities)
   }
 
   async findActivity(id){
-    return this.activityRepository.findOne({id: id})
+    return this.activityRepository.findOne({id})
   }
 }

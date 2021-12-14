@@ -4,5 +4,4 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 export class CreateLocationInput {
   @Field()
   address: string;
-
 }

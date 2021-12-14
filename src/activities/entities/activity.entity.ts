@@ -5,7 +5,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   ManyToOne,
-  BeforeUpdate,
 } from 'typeorm';
 import {Account} from "../../accounts/entities/account.entity";
 import {Location} from "../../locations/entities/location.entity";
