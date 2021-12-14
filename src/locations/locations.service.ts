@@ -3,8 +3,9 @@ import { CreateLocationInput } from './dto/create-location.input';
 import { UpdateLocationInput } from './dto/update-location.input';
 import {InjectRepository} from "@nestjs/typeorm";
 import {Location} from "./entities/location.entity";
-import {Repository, In} from "typeorm";
+import {Repository, In, getRepository} from "typeorm";
 import {JwtService} from "@nestjs/jwt";
+import {Activity} from "../activities/entities/activity.entity";
 
 @Injectable()
 export class LocationsService {
@@ -91,5 +92,16 @@ export class LocationsService {
 
   async findAll(){
     return this.locationService.find()
+  }
+
+  async findAllLocationByUser(token){
+    const currentUser = await this.jwtService.verify(token)
+    const locationsList = await getRepository(Location)
+        .createQueryBuilder('locations')
+        .where("location.account.id = :id", {id: currentUser.id})
+        .getMany()
+    const userLocations = locationsList.map((location) => location.id)
+    return this.find(userLocations)
+
   }
 }

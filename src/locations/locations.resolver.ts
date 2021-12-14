@@ -37,4 +37,11 @@ export class LocationsResolver {
     return this.locationsService.findAll();
   }
 
+  @Query(() => [Location], { name: 'locations'})
+  @UseGuards(JwtAuthGuard)
+  findLocationByUser(@User() currentUser: Account) {
+    return this.locationsService.findAllLocationByUser(currentUser);
+  }
+
+
 }

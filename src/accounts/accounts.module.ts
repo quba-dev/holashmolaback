@@ -5,6 +5,8 @@ import {JwtAuthGuard} from "./jwt-auth.guard";
 import {AccountsService} from "./accounts.service";
 import {Account} from "./entities/account.entity";
 import {AccountsResolver} from "./accounts.resolver";
+import {LocationsService} from "../locations/locations.service";
+import {ActivitiesService} from "../activities/activities.service";
 
 @Module({
 
@@ -16,7 +18,7 @@ import {AccountsResolver} from "./accounts.resolver";
       signOptions: {
         expiresIn: '24h'
       }
-    }),
+    })
   ],
   exports: [
     JwtModule,JwtAuthGuard,AccountsService

@@ -8,6 +8,7 @@ import {CreateUserInput} from "./dto/create-account.input";
 import {LoginUserInput} from "./dto/login-user.input";
 
 
+
 @Injectable()
 export class AccountsService {
   constructor(@InjectRepository(Account)
@@ -64,7 +65,7 @@ export class AccountsService {
     return this.userRepository.findOne({where: {username}})
   }
 
-  async getInfo(user){ // profile
+  async profile(user){ // profile
     const infoUser = await this.jwtService.verify(user)
     return this.userRepository.findOne({id: infoUser.id})
   }

@@ -25,7 +25,7 @@ export class AccountsResolver {
 
   @Query(()=>Account)
   getInfo(@User() currentUser: Account){
-    return this.accountsService.getInfo(currentUser)
+    return this.accountsService.profile(currentUser)
   }
 
 }
