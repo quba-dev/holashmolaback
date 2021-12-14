@@ -8,6 +8,7 @@ import {DateIntervalInput} from "./dto/dateInterval.input";
 import {dayInput} from "./dto/day.input";
 import {JwtService} from "@nestjs/jwt";
 import {Location} from "../locations/entities/location.entity";
+import {AccountsService} from "../accounts/accounts.service";
 
 
 @Injectable()
@@ -17,6 +18,7 @@ export class ActivitiesService{
       @InjectRepository(Activity)
       private readonly activityRepository: Repository<Activity>,
       private locationService: LocationsService,
+      private accountService: AccountsService,
       private readonly jwtService: JwtService
   ) {
   }
@@ -116,11 +118,6 @@ export class ActivitiesService{
     }
 
     const entry = activitiesList.map((activity) => activity.id)
-    // const dataActivities = []
-    // for ( let activitiesId of activitiesList){
-    //   dataActivities.push(activitiesId.id)
-    // }
-
     const activities = await this.find(entry)
 
     return [...activities]
@@ -142,5 +139,16 @@ export class ActivitiesService{
 
   async findActivity(id){
     return this.activityRepository.findOne({id})
+  }
+
+  async findInfo(user){
+    const currentUser = await this.accountService.profile(user)
+    const activities = await this.findAllActivityByUser(user)
+    const locations = await this.locationService.findAllLocationByUser(user)
+    return {
+      ...currentUser,
+      activities,
+      locations
+    }
   }
 }

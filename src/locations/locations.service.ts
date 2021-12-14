@@ -96,12 +96,12 @@ export class LocationsService {
 
   async findAllLocationByUser(token){
     const currentUser = await this.jwtService.verify(token)
+    console.log(currentUser.id)
     const locationsList = await getRepository(Location)
         .createQueryBuilder('locations')
-        .where("location.account.id = :id", {id: currentUser.id})
+        .where("locations.account.id = :id", {id: currentUser.id})
         .getMany()
     const userLocations = locationsList.map((location) => location.id)
     return this.find(userLocations)
-
   }
 }

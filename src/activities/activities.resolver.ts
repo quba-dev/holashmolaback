@@ -64,4 +64,10 @@ export class ActivitiesResolver {
   findActivity(@Args('id',{type: () => Int}) id: number) {
     return this.activitiesService.findActivity(id)
   }
+
+  @Query(() => Account, { name: 'profile'})
+  @UseGuards(JwtAuthGuard)
+  findInfo(@User() currentUser: Account) {
+    return this.activitiesService.findInfo(currentUser)
+  }
 }

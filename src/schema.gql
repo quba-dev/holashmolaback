@@ -83,6 +83,8 @@ type Query {
   findAllActivityFromLocationId(id: Int!): [Activity!]!
   getInfo: Account!
   locations: [Location!]!
+  locationsByUser: [Location!]!
+  profile: Account!
 }
 
 input UpdateActivityInput {
