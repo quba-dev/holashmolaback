@@ -141,14 +141,7 @@ export class ActivitiesService{
     return this.activityRepository.findOne({id})
   }
 
-  // async findInfo(user){
-  //   const currentUser = await this.accountService.profile(user)
-  //   const activities = await this.findAllActivityByUser(user)
-  //   const locations = await this.locationService.findAllLocationByUser(user)
-  //   return {
-  //     ...currentUser,
-  //     activities,
-  //     locations
-  //   }
-  // }
+  async findAllActivity(){
+    return this.activityRepository.find()
+  }
 }

@@ -65,4 +65,9 @@ export class ActivitiesResolver {
     return this.activitiesService.findActivity(id)
   }
 
+  @Query(() => [Activity], { name: 'findAllActivities'})
+  findAllActivities(){
+    return this.activitiesService.findAllActivity()
+  }
+
 }

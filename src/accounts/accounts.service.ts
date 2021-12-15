@@ -83,15 +83,16 @@ export class AccountsService {
 
   async changePassword(user, changePasswordDto){
     const infoUser = await this.jwtService.verify(user)
+    const {old_password, new_password, confirm_password} = changePasswordDto
     const currentUser = await this.userRepository.findOne({id: infoUser.id})
-    const validate = await bcrypt.compare(changePasswordDto.old_password, currentUser.password);
+    const validate = await bcrypt.compare(old_password, currentUser.password);
     if ( !validate){
       throw new UnauthorizedException({message: 'Некорректный пароль'});
     }
-    if ( changePasswordDto.confirm_password !== changePasswordDto.new_password){
+    if ( confirm_password !== new_password){
       throw new UnauthorizedException({message: 'Пароли не совпадают'});
     }
-    const hashPassword = await bcrypt.hash(changePasswordDto.new_password, 5);
+    const hashPassword = await bcrypt.hash(new_password, 5);
     return this.userRepository.save({...currentUser, password: hashPassword})
   }
 }
