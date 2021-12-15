@@ -65,6 +65,7 @@ input LoginUserInput {
 }
 
 type Mutation {
+  changePassword(changePassword: changePasswordInput!): Account!
   createActivity(createActivityInput: CreateActivityInput!): Activity!
   createLocation(createLocationInput: CreateLocationInput!): Location!
   login(loginUserInput: LoginUserInput!): LoginResponse!
@@ -81,7 +82,6 @@ type Query {
   findActByUser: [Activity!]!
   findActOne(id: Int!): Activity!
   findAllActivityFromLocationId(id: Int!): [Activity!]!
-  getInfo: Account!
   locations: [Location!]!
   locationsByUser: [Location!]!
   profile: Account!
@@ -98,6 +98,12 @@ input UpdateActivityInput {
 input UpdateLocationInput {
   address: String!
   id: Int!
+}
+
+input changePasswordInput {
+  confirm_password: String!
+  new_password: String!
+  old_password: String!
 }
 
 input dayInput {

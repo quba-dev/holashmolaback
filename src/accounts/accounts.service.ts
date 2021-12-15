@@ -2,10 +2,12 @@ import {HttpException, HttpStatus, Injectable, UnauthorizedException} from '@nes
 import {JwtService} from "@nestjs/jwt";
 import * as bcrypt from 'bcrypt';
 import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from "typeorm";
+import {getRepository, Repository} from "typeorm";
 import {Account} from "./entities/account.entity";
 import {CreateUserInput} from "./dto/create-account.input";
 import {LoginUserInput} from "./dto/login-user.input";
+import {Activity} from "../activities/entities/activity.entity";
+import {Location} from "../locations/entities/location.entity";
 
 
 
@@ -67,6 +69,29 @@ export class AccountsService {
 
   async profile(user){
     const infoUser = await this.jwtService.verify(user)
-    return this.userRepository.findOne({id: infoUser.id})
+    const currentUser = await this.userRepository.findOne({id: infoUser.id})
+    const activity = getRepository(Activity)
+        .createQueryBuilder('activity')
+        .where('activity.account.id =:id', {id: currentUser.id})
+        .getMany()
+    const location = getRepository(Location)
+        .createQueryBuilder('location')
+        .where('location.account.id =:id', {id: currentUser.id})
+        .getMany()
+    return {...currentUser, activities: activity, locations: location}
+  }
+
+  async changePassword(user, changePasswordDto){
+    const infoUser = await this.jwtService.verify(user)
+    const currentUser = await this.userRepository.findOne({id: infoUser.id})
+    const validate = await bcrypt.compare(changePasswordDto.old_password, currentUser.password);
+    if ( !validate){
+      throw new UnauthorizedException({message: 'Некорректный пароль'});
+    }
+    if ( changePasswordDto.confirm_password !== changePasswordDto.new_password){
+      throw new UnauthorizedException({message: 'Пароли не совпадают'});
+    }
+    const hashPassword = await bcrypt.hash(changePasswordDto.new_password, 5);
+    return this.userRepository.save({...currentUser, password: hashPassword})
   }
 }
