@@ -93,6 +93,7 @@ export class AccountsService {
       throw new UnauthorizedException({message: 'Пароли не совпадают'});
     }
     const hashPassword = await bcrypt.hash(new_password, 5);
-    return this.userRepository.save({...currentUser, password: hashPassword})
+    await this.userRepository.save({...currentUser, password: hashPassword})
+    return currentUser
   }
 }
