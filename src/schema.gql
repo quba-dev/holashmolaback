@@ -81,6 +81,7 @@ type Query {
   dates(dateIntervalInput: DateIntervalInput!): [Activity!]!
   findActByUser: [Activity!]!
   findActOne(id: Int!): Activity!
+  findAllActivities: [Activity!]!
   findAllActivityFromLocationId(id: Int!): [Activity!]!
   locations: [Location!]!
   locationsByUser: [Location!]!

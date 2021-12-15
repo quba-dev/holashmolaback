@@ -92,6 +92,11 @@ export class AccountsService {
     if ( confirm_password !== new_password){
       throw new UnauthorizedException({message: 'Пароли не совпадают'});
     }
+    const validateUniq = await bcrypt.compare(new_password, currentUser.password)
+    if( validateUniq ){
+      throw new UnauthorizedException({message: 'Старый пароль и новый пароль не должны совпадать'});
+    }
+
     const hashPassword = await bcrypt.hash(new_password, 5);
     await this.userRepository.save({...currentUser, password: hashPassword})
     return currentUser

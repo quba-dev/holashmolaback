@@ -15,7 +15,7 @@ import {Location} from "../../locations/entities/location.entity";
 @ObjectType()
 export class Activity {
   @PrimaryGeneratedColumn()
-  @Field(() => Int, )
+  @Field(() => Int)
   id: number
 
   @Column()
