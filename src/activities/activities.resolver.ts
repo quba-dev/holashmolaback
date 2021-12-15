@@ -65,9 +65,15 @@ export class ActivitiesResolver {
     return this.activitiesService.findActivity(id)
   }
 
+  // @Query(() => [Activity], { name: 'findAllActivities'})
+  // findAllActivities(){
+  //   return this.activitiesService.findAllActivity()
+  // }
+
   @Query(() => [Activity], { name: 'findAllActivities'})
-  findAllActivities(){
-    return this.activitiesService.findAllActivity()
+  findAllActivities(@Args('skip', {type: () => Int, nullable: true, defaultValue: 0}) skip: number,
+                    @Args('take', {type: () => Int, nullable: true, defaultValue: 0}) take: number){
+    return this.activitiesService.findAllActivity({skip, take})
   }
 
 }

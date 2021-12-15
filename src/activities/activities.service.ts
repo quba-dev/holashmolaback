@@ -141,7 +141,11 @@ export class ActivitiesService{
     return this.activityRepository.findOne({id})
   }
 
-  async findAllActivity(){
-    return this.activityRepository.find()
+  // async findAllActivity(){
+  //   return this.activityRepository.find()
+  // }
+
+  async findAllActivity(options: any ){
+    return this.activityRepository.find({skip: options.skip || 0, take: options.take || 0})
   }
 }
