@@ -48,14 +48,14 @@ export class LocationsService {
     const locationHasRelation = await getRepository(Activity).createQueryBuilder('activity').where('activity.location.id =:id', {id}).getMany()
 
     if (!location) {
-        throw new HttpException('location does not exist', HttpStatus.NOT_FOUND)
+        throw new HttpException('Такой локации нет', HttpStatus.NOT_FOUND)
     }
     if (location.account.email !== user.email){
-        throw new HttpException('You are not author', HttpStatus.FORBIDDEN)
+        throw new HttpException('Ты не являешься автором', HttpStatus.FORBIDDEN)
     }
 
     if (locationHasRelation.length !== 0) {
-      throw new HttpException('Location has activities, first you should delete activities.', HttpStatus.NOT_FOUND)
+      throw new HttpException('Ты не можешь удалить локацию у которой есть мероприятие', HttpStatus.NOT_FOUND)
     }
 
     await this.locationService.delete(id)
