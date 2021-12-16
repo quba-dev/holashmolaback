@@ -53,6 +53,10 @@ export class LocationsService {
         throw new HttpException('You are not author', HttpStatus.FORBIDDEN)
     }
 
+    if (location.activities) {
+      throw new HttpException('Location has activities, first you should delete activities.', HttpStatus.NOT_FOUND)
+    }
+
     await this.locationService.delete(id)
     return location
   }
