@@ -45,6 +45,7 @@ export class LocationsService {
   async remove(id: number, currentUser) {
     const location = await this.locationService.findOne(id)
     const user = this.jwtService.verify(currentUser)
+    const locationHasRelation = await getRepository(Activity).createQueryBuilder('activity').where('activity.location.id =:id', {id}).getMany()
 
     if (!location) {
         throw new HttpException('location does not exist', HttpStatus.NOT_FOUND)
@@ -53,7 +54,7 @@ export class LocationsService {
         throw new HttpException('You are not author', HttpStatus.FORBIDDEN)
     }
 
-    if (location.activities) {
+    if (locationHasRelation.length !== 0) {
       throw new HttpException('Location has activities, first you should delete activities.', HttpStatus.NOT_FOUND)
     }
 
